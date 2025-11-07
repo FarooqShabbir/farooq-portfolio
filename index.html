@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Farooq Shabbir | DevOps Engineer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body data-page="home">
+    <header class="site-header">
+      <div class="container nav-container">
+        <a href="index.html" class="brand" aria-label="Farooq Shabbir home">
+          <span class="brand-mark">FS</span>
+          <span class="brand-name">Farooq Shabbir</span>
+        </a>
+        <nav class="site-nav" aria-label="Main navigation">
+          <button class="nav-toggle" aria-expanded="false" aria-controls="primary-menu">
+            <span class="nav-toggle-bar"></span>
+            <span class="nav-toggle-bar"></span>
+            <span class="nav-toggle-bar"></span>
+          </button>
+          <ul id="primary-menu" class="nav-list">
+            <li><a href="index.html" class="nav-link" data-page="home">Home</a></li>
+            <li><a href="about.html" class="nav-link" data-page="about">About</a></li>
+            <li><a href="projects.html" class="nav-link" data-page="projects">Projects</a></li>
+            <li><a href="services.html" class="nav-link" data-page="services">Services</a></li>
+            <li><a href="contact.html" class="nav-link" data-page="contact">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero-section" data-animate="tilt">
+        <div class="container hero-content">
+          <div class="hero-text">
+            <p class="eyebrow">DevOps Engineer</p>
+            <h1>Building reliable, scalable pipelines that let innovation flow.</h1>
+            <p>
+              Farooq Shabbir designs secure CI/CD ecosystems, cloud-native architectures,
+              and observability frameworks that keep teams shipping with confidence.
+            </p>
+            <div class="hero-actions">
+              <a class="btn primary" href="projects.html">View Projects</a>
+              <a class="btn ghost" href="contact.html">Work With Me</a>
+            </div>
+          </div>
+          <div class="hero-visual" data-animate="depth-card">
+            <div class="card-3d">
+              <div class="card-layer layer-grid"></div>
+              <div class="card-layer layer-terminal">
+                <pre><code>pipeline "prod-deploy" {
+  source  = github("farooq", "platform")
+  build   = docker_build("app", "./src")
+  deploy  = kubernetes_apply("cluster:prod")
+  observe = grafana_dashboard("ship-rate")
+}</code></pre>
+              </div>
+              <div class="card-layer layer-glow"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" data-animate="rise">
+        <div class="container split">
+          <div>
+            <h2>Operational Excellence, Automated</h2>
+            <p>
+              From infrastructure as code to progressive delivery, Farooq orchestrates
+              the full DevOps lifecycle so teams can iterate faster without sacrificing
+              reliability or security.
+            </p>
+          </div>
+          <ul class="pillars">
+            <li data-animate="tilt">Cloud-native pipelines</li>
+            <li data-animate="tilt">Continuous security</li>
+            <li data-animate="tilt">Observability first</li>
+            <li data-animate="tilt">Team enablement</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section highlight" data-animate="depth">
+        <div class="container">
+          <h2>Featured Achievements</h2>
+          <div class="achievement-grid">
+            <article class="achievement-card" data-animate="tilt">
+              <h3>99.95% Uptime</h3>
+              <p>Modernized infrastructure on AWS EKS with self-healing GitOps workflows.</p>
+            </article>
+            <article class="achievement-card" data-animate="tilt">
+              <h3>30 min → 7 min Deploys</h3>
+              <p>Built container-native CI/CD using ArgoCD and Tekton across 12 services.</p>
+            </article>
+            <article class="achievement-card" data-animate="tilt">
+              <h3>Full-stack Observability</h3>
+              <p>Unified Prometheus, Loki, and Grafana dashboards with proactive alerting.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section cta" data-animate="rise">
+        <div class="container cta-content">
+          <h2>Ready to harden your delivery pipeline?</h2>
+          <p>
+            Let’s design the automation, infrastructure, and culture that keeps products
+            shipping smoothly at scale.
+          </p>
+          <a class="btn primary" href="contact.html">Start a conversation</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-content">
+        <p>&copy; <span id="current-year"></span> Farooq Shabbir. All rights reserved.</p>
+        <div class="social-links">
+          <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+          <a href="mailto:hello@farooqshabbir.site">Email</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/js/main.js" defer></script>
+  </body>
+</html>

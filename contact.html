@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact | Farooq Shabbir</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body data-page="contact">
+    <header class="site-header">
+      <div class="container nav-container">
+        <a href="index.html" class="brand" aria-label="Farooq Shabbir home">
+          <span class="brand-mark">FS</span>
+          <span class="brand-name">Farooq Shabbir</span>
+        </a>
+        <nav class="site-nav" aria-label="Main navigation">
+          <button class="nav-toggle" aria-expanded="false" aria-controls="primary-menu">
+            <span class="nav-toggle-bar"></span>
+            <span class="nav-toggle-bar"></span>
+            <span class="nav-toggle-bar"></span>
+          </button>
+          <ul id="primary-menu" class="nav-list">
+            <li><a href="index.html" class="nav-link" data-page="home">Home</a></li>
+            <li><a href="about.html" class="nav-link" data-page="about">About</a></li>
+            <li><a href="projects.html" class="nav-link" data-page="projects">Projects</a></li>
+            <li><a href="services.html" class="nav-link" data-page="services">Services</a></li>
+            <li><a href="contact.html" class="nav-link" data-page="contact">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-hero" data-animate="depth">
+        <div class="container">
+          <h1>Contact</h1>
+          <p>Share your goals and Farooq will help shape the roadmap to reach them.</p>
+        </div>
+      </section>
+
+      <section class="section" data-animate="rise">
+        <div class="container contact-grid">
+          <form class="contact-form" data-animate="tilt" action="#" method="post">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" id="name" name="name" placeholder="Your name" required />
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="name@company.com" required />
+            </div>
+            <div class="form-group">
+              <label for="company">Company</label>
+              <input type="text" id="company" name="company" placeholder="Organization" />
+            </div>
+            <div class="form-group">
+              <label for="timeline">Ideal timeline</label>
+              <select id="timeline" name="timeline">
+                <option value="flexible">Flexible</option>
+                <option value="3-months">Within 3 months</option>
+                <option value="6-months">Within 6 months</option>
+                <option value="asap">As soon as possible</option>
+              </select>
+            </div>
+            <div class="form-group full">
+              <label for="message">Project details</label>
+              <textarea id="message" name="message" rows="5" placeholder="Tell me more..."></textarea>
+            </div>
+            <button type="submit" class="btn primary">Send message</button>
+          </form>
+
+          <aside class="contact-details" data-animate="tilt">
+            <div class="detail-card">
+              <h2>Direct Contact</h2>
+              <p>Email: <a href="mailto:hello@farooqshabbir.site">hello@farooqshabbir.site</a></p>
+              <p>Location: Remote, based in Lahore, Pakistan</p>
+            </div>
+            <div class="detail-card">
+              <h2>Let’s collaborate</h2>
+              <p>Book time directly on the calendar to explore your DevOps initiative.</p>
+              <a class="btn ghost" href="#">Schedule via Calendly</a>
+            </div>
+            <!--<div class="map-embed" data-animate="depth-card">
+              <div class="map-placeholder">
+                <span>Map preview of service regions</span>
+              </div>
+            </div>-->
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-content">
+        <p>&copy; <span id="current-year"></span> Farooq Shabbir. All rights reserved.</p>
+        <div class="social-links">
+          <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+          <a href="mailto:hello@farooqshabbir.site">Email</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/js/main.js" defer></script>
+  </body>
+</html>

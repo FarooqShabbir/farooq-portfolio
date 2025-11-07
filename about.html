@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About | Farooq Shabbir</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body data-page="about">
+    <header class="site-header">
+      <div class="container nav-container">
+        <a href="index.html" class="brand" aria-label="Farooq Shabbir home">
+          <span class="brand-mark">FS</span>
+          <span class="brand-name">Farooq Shabbir</span>
+        </a>
+        <nav class="site-nav" aria-label="Main navigation">
+          <button class="nav-toggle" aria-expanded="false" aria-controls="primary-menu">
+            <span class="nav-toggle-bar"></span>
+            <span class="nav-toggle-bar"></span>
+            <span class="nav-toggle-bar"></span>
+          </button>
+          <ul id="primary-menu" class="nav-list">
+            <li><a href="index.html" class="nav-link" data-page="home">Home</a></li>
+            <li><a href="about.html" class="nav-link" data-page="about">About</a></li>
+            <li><a href="projects.html" class="nav-link" data-page="projects">Projects</a></li>
+            <li><a href="services.html" class="nav-link" data-page="services">Services</a></li>
+            <li><a href="contact.html" class="nav-link" data-page="contact">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-hero" data-animate="depth">
+        <div class="container">
+          <h1>About Farooq</h1>
+          <p>
+            A DevOps leader passionate about bridging the gap between development and
+            operations through automation, collaboration, and continuous learning.
+          </p>
+        </div>
+      </section>
+
+      <section class="section" data-animate="rise">
+        <div class="container split about-intro">
+          <div>
+            <h2>Philosophy</h2>
+            <p>
+              Farooq believes resilient systems emerge from empowered teams. By codifying
+              infrastructure, instrumenting feedback loops, and encouraging experimentation,
+              he helps organizations deliver faster while staying secure and compliant.
+            </p>
+          </div>
+          <div class="core-values" data-animate="tilt">
+            <div class="value-pill">Automation with empathy</div>
+            <div class="value-pill">Security as a practice</div>
+            <div class="value-pill">Measure everything</div>
+            <div class="value-pill">Iterate and learn</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section highlight" data-animate="depth">
+        <div class="container">
+          <h2>Capabilities</h2>
+          <div class="skills-grid">
+            <div class="skill-card" data-animate="tilt">
+              <h3>Cloud Platforms</h3>
+              <p>AWS, Azure, GCP, hybrid workloads, resilient multi-region design.</p>
+            </div>
+            <div class="skill-card" data-animate="tilt">
+              <h3>Automation</h3>
+              <p>Terraform, Pulumi, Ansible, GitOps, policy as code, shift-left security.</p>
+            </div>
+            <div class="skill-card" data-animate="tilt">
+              <h3>Delivery Tooling</h3>
+              <p>Tekton, GitHub Actions, ArgoCD, Spinnaker, progressive delivery patterns.</p>
+            </div>
+            <div class="skill-card" data-animate="tilt">
+              <h3>Observability</h3>
+              <p>Prometheus, Grafana, OpenTelemetry, incident response, SLO design.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section timeline" data-animate="rise">
+        <div class="container">
+          <h2>Journey</h2>
+          <div class="timeline-track">
+            <article class="timeline-item" data-animate="tilt">
+              <span class="timeline-year">2024 — Present</span>
+              <h3>Lead DevOps Engineer, CloudScale Labs</h3>
+              <p>
+                Scaled platform to 4 regions, introduced GitOps and chaos engineering,
+                and improved shipping cadence by 5x.
+              </p>
+            </article>
+            <article class="timeline-item" data-animate="tilt">
+              <span class="timeline-year">2021 — 2024</span>
+              <h3>Senior Platform Engineer, NexaPay</h3>
+              <p>
+                Modernized payments infrastructure, automated compliance controls, and
+                implemented observability-first culture.
+              </p>
+            </article>
+            <article class="timeline-item" data-animate="tilt">
+              <span class="timeline-year">2017 — 2021</span>
+              <h3>DevOps Engineer, Innovatech</h3>
+              <p>
+                Built self-service deployment platform and reduced incidents by 60% via
+                proactive monitoring and alerting.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-content">
+        <p>&copy; <span id="current-year"></span> Farooq Shabbir. All rights reserved.</p>
+        <div class="social-links">
+          <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+          <a href="mailto:hello@farooqshabbir.site">Email</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/js/main.js" defer></script>
+  </body>
+</html>
