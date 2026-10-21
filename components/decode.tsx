@@ -62,8 +62,7 @@ export function DecodeText({ text, delay = 0, className = "" }: { text: string; 
   const words = text.split(" ");
   return (
     <span className={className}>
-      <span className="sr-only">{text}</span>
-      <span ref={root} aria-hidden className="decode-pending">
+      <span ref={root} className="decode-pending">
         {words.map((word, wi) => (
           <Fragment key={wi}>
             <span className="inline-block whitespace-nowrap">
@@ -72,7 +71,7 @@ export function DecodeText({ text, delay = 0, className = "" }: { text: string; 
                   <span className="transition-opacity duration-150">{ch}</span>
                   <span
                     data-slot
-                    className="absolute inset-0 flex items-center justify-center font-mono text-[0.7em] text-primary"
+                    className="absolute inset-0 flex items-center justify-center font-mono text-[0.7em] text-primary empty:hidden"
                   />
                 </span>
               ))}

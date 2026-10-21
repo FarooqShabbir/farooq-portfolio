@@ -52,12 +52,14 @@ export function Hero() {
           </span>
         </motion.a>
 
-        <motion.p data-reveal {...rise(0.1)} className="eyebrow mt-8">
-          {profile.role} <span className="text-primary">/</span> {profile.roleTag}
-        </motion.p>
-
-        <h1 className="display-xl mt-5 max-w-[14ch] pointer-events-none">
-          <DecodeText text={profile.headline} delay={base + 0.15} />
+        {/* The h1 carries the name and role for search, then the headline; the label gives screen readers one clean sentence. */}
+        <h1 aria-label={`${profile.name}, ${profile.role} (${profile.roleTag}). ${profile.headline}`} className="mt-8">
+          <motion.span data-reveal {...rise(0.1)} className="eyebrow block">
+            {profile.name} <span className="text-primary">/</span> {profile.role} · {profile.roleTag}
+          </motion.span>{" "}
+          <span className="display-xl mt-5 block max-w-[14ch] pointer-events-none">
+            <DecodeText text={profile.headline} delay={base + 0.15} />
+          </span>
         </h1>
 
         <motion.p data-reveal {...rise(0.9)} className="mt-7 max-w-[56ch] text-[17px] leading-relaxed text-ink-muted sm:text-lg">

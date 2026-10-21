@@ -94,9 +94,7 @@ export function MaskedWords({
   const words = text.split(" ");
   return (
     <Tag id={id} className={className}>
-      <span className="sr-only">{text}</span>
       <motion.span
-        aria-hidden
         className="block"
         initial="hidden"
         whileInView="show"
