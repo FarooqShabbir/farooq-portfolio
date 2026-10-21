@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 import { profile, stats } from "@/content/profile";
-import { EASE } from "./motion";
+import { CountUp, EASE, HeroGlow, Magnetic, TiltIn } from "./motion";
 import { PipelineConsole } from "./pipeline-console";
 
 const fadeUp = (delay: number) => ({
@@ -16,7 +16,8 @@ export function Hero() {
 
   return (
     <section id="top" className="relative overflow-hidden pt-28 sm:pt-36">
-      <div className="mx-auto max-w-[1200px] px-4 sm:px-6">
+      <HeroGlow />
+      <div className="relative mx-auto max-w-[1200px] px-4 sm:px-6">
         <motion.a
           data-reveal
           href="#contact"
@@ -55,12 +56,16 @@ export function Hero() {
         </motion.p>
 
         <motion.div data-reveal {...fadeUp(0.55)} className="mt-8 flex flex-wrap items-center gap-3">
-          <a href="#contact" className="btn btn-primary">
-            Start a project
-          </a>
-          <a href="#work" className="btn btn-secondary">
-            See selected work
-          </a>
+          <Magnetic>
+            <a href="#contact" className="btn btn-primary">
+              Start a project
+            </a>
+          </Magnetic>
+          <Magnetic>
+            <a href="#work" className="btn btn-secondary">
+              See selected work
+            </a>
+          </Magnetic>
           <span className="ml-1 text-[13px] text-ink-tertiary">
             {profile.location} · working remotely
           </span>
@@ -76,7 +81,9 @@ export function Hero() {
       >
         <div className="dot-grid pointer-events-none absolute -inset-x-10 -inset-y-16" aria-hidden />
         <div className="relative mx-auto max-w-[980px]">
-          <PipelineConsole />
+          <TiltIn>
+            <PipelineConsole />
+          </TiltIn>
         </div>
       </motion.div>
 
@@ -93,7 +100,9 @@ export function Hero() {
               className="bg-canvas px-5 py-6"
             >
               <dt className="sr-only">{s.label}</dt>
-              <dd className="font-mono text-3xl font-medium tracking-tight text-ink">{s.value}</dd>
+              <dd className="font-mono text-3xl font-medium tabular-nums tracking-tight text-ink">
+                <CountUp to={Number(s.value)} />
+              </dd>
               <dd className="mt-1 text-[13px] leading-snug text-ink-subtle">{s.label}</dd>
             </motion.div>
           ))}

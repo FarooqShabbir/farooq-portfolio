@@ -50,7 +50,7 @@ function StatusIcon({ state }: { state: "done" | "running" | "queued" }) {
 /** A looping, illustrative CI/CD run: the hero's "product screenshot". */
 export function PipelineConsole() {
   const reduce = useReducedMotion();
-  const [step, setStep] = useState(reduce ? STAGES.length : 0);
+  const [step, setStep] = useState(0);
 
   useEffect(() => {
     if (reduce) {

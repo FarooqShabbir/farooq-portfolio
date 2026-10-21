@@ -7,19 +7,17 @@ import {
   services,
   skillGroups,
 } from "@/content/profile";
-import { Reveal } from "./motion";
+import { DrawLine, DrawRule, MaskedWords, Parallax, Reveal, Spotlight } from "./motion";
 import { InfraVisual, PipelineVisual, ReleaseVisual, VoiceVisual } from "./visuals";
 
 function SectionHeader({ id, eyebrow, title, lead }: { id: string; eyebrow: string; title: string; lead?: string }) {
   return (
     <Reveal className="max-w-[720px]">
       <p className="eyebrow flex items-center gap-2">
-        <span className="h-px w-6 bg-primary" aria-hidden />
+        <DrawRule className="h-px w-6" />
         {eyebrow}
       </p>
-      <h2 id={`${id}-title`} className="display-lg mt-4">
-        {title}
-      </h2>
+      <MaskedWords id={`${id}-title`} className="display-lg mt-4" text={title} />
       {lead && <p className="mt-5 text-[17px] leading-relaxed text-ink-subtle">{lead}</p>}
     </Reveal>
   );
@@ -71,7 +69,9 @@ export function Work() {
                 </ul>
               </Reveal>
               <Reveal delay={0.1} y={28} className={`min-w-0 ${flip ? "lg:order-1" : ""}`}>
-                <Visual />
+                <Parallax>
+                  <Visual />
+                </Parallax>
               </Reveal>
             </article>
           );
@@ -85,9 +85,10 @@ export function Experience() {
   return (
     <Section id="experience" className="border-t border-hairline">
       <SectionHeader id="experience" eyebrow="Experience" title="Where I've done the work." />
-      <ol className="mt-14 border-t border-hairline">
+      <ol className="relative mt-14 border-t border-hairline">
         {experience.map((job, idx) => (
-          <li key={job.company} className="border-b border-hairline">
+          <li key={job.company} className="relative">
+            <DrawLine />
             <Reveal delay={idx * 0.05} className="grid gap-6 py-10 md:grid-cols-[220px_1fr] md:gap-12">
               <div>
                 <p className="font-mono text-[13px] text-ink-subtle">{job.period}</p>
@@ -121,7 +122,7 @@ export function Experience() {
                 </details>
                 <ul className="mt-5 flex flex-wrap gap-1.5" aria-label="Technologies">
                   {job.stack.map((t) => (
-                    <li key={t} className="chip">
+                    <li key={t} className="chip tech-chip">
                       {t}
                     </li>
                   ))}
@@ -147,7 +148,7 @@ export function Services() {
       <div className="mt-14 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {services.map((s, idx) => (
           <Reveal key={s.title} delay={(idx % 3) * 0.06} className="h-full">
-            <div className="panel group flex h-full flex-col p-6 transition-colors duration-300 hover:border-hairline-strong hover:bg-surface-2">
+            <Spotlight className="panel group flex h-full flex-col p-6 transition-[background-color,transform] duration-300 hover:-translate-y-0.5 hover:bg-surface-2">
               <span className="font-mono text-[12px] text-ink-tertiary">0{idx + 1}</span>
               <h3 className="mt-6 text-[20px] font-medium tracking-[-0.02em]">{s.title}</h3>
               <p className="mt-3 flex-1 text-[15px] leading-relaxed text-ink-subtle">{s.body}</p>
@@ -158,7 +159,7 @@ export function Services() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </Spotlight>
           </Reveal>
         ))}
       </div>
@@ -185,6 +186,15 @@ export function Stack() {
         <div className="flex w-max animate-marquee gap-2 hover:[animation-play-state:paused]">
           {[...marquee, ...marquee].map((t, i) => (
             <span key={i} className="rounded-md border border-hairline bg-surface-1 px-3 py-1.5 font-mono text-[13px] text-ink-muted">
+              {t}
+            </span>
+          ))}
+        </div>
+      </div>
+      <div className="relative mt-2 overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_12%,#000_88%,transparent)]" aria-hidden>
+        <div className="flex w-max animate-marquee-reverse gap-2 hover:[animation-play-state:paused]">
+          {[...marquee].reverse().concat([...marquee].reverse()).map((t, i) => (
+            <span key={i} className="rounded-md border border-hairline bg-surface-1 px-3 py-1.5 font-mono text-[13px] text-ink-subtle">
               {t}
             </span>
           ))}

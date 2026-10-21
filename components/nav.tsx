@@ -75,11 +75,18 @@ export function Nav() {
               <a
                 href={`#${id}`}
                 aria-current={active === id ? "true" : undefined}
-                className={`rounded-md px-3 py-1.5 text-sm transition-colors hover:text-ink ${
+                className={`relative block rounded-md px-3 py-1.5 text-sm transition-colors hover:text-ink ${
                   active === id ? "text-ink" : "text-ink-subtle"
                 }`}
               >
-                {label}
+                {active === id && (
+                  <motion.span
+                    layoutId="nav-pill"
+                    className="absolute inset-0 -z-0 rounded-md bg-surface-2"
+                    transition={{ type: "spring", stiffness: 380, damping: 34 }}
+                  />
+                )}
+                <span className="relative">{label}</span>
               </a>
             </li>
           ))}
@@ -124,16 +131,21 @@ export function Nav() {
             className="overflow-hidden border-t border-hairline md:hidden"
           >
             <ul className="px-4 py-3">
-              {[...LINKS, { id: "contact", label: "Contact" }].map(({ id, label }) => (
-                <li key={id}>
+              {[...LINKS, { id: "contact", label: "Contact" }].map(({ id, label }, i) => (
+                <motion.li
+                  key={id}
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, ease: EASE, delay: 0.04 * i }}
+                >
                   <a
                     href={`#${id}`}
                     onClick={() => setOpen(false)}
-                    className="flex min-h-11 items-center border-b border-hairline text-base text-ink-muted last:border-none"
+                    className="flex min-h-11 transition-[padding,color] duration-200 hover:pl-1.5 hover:text-ink items-center border-b border-hairline text-base text-ink-muted last:border-none"
                   >
                     {label}
                   </a>
-                </li>
+                </motion.li>
               ))}
             </ul>
           </motion.div>
