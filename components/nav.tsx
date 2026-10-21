@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { EASE } from "./motion";
 
 const LINKS = [
+  { id: "pipeline", label: "Pipeline" },
   { id: "work", label: "Work" },
   { id: "experience", label: "Experience" },
   { id: "services", label: "Services" },
@@ -16,7 +17,7 @@ export function BrandMark({ size = 28 }: { size?: number }) {
   return (
     <span
       aria-hidden
-      className="grid place-items-center rounded-md bg-primary font-mono text-[11px] font-semibold tracking-tight text-white"
+      className="grid place-items-center rounded-full bg-ink font-mono text-[10.5px] tracking-tight text-canvas"
       style={{ width: size, height: size }}
     >
       FS
@@ -64,7 +65,7 @@ export function Nav() {
       }`}
     >
       <nav aria-label="Main" className="mx-auto flex h-14 max-w-[1200px] items-center justify-between px-4 sm:px-6">
-        <a href="#top" className="flex items-center gap-2.5 text-sm font-medium" onClick={() => setOpen(false)}>
+        <a href="#top" className="flex items-center gap-2.5 text-sm" onClick={() => setOpen(false)}>
           <BrandMark />
           <span>Farooq Shabbir</span>
         </a>
@@ -75,14 +76,14 @@ export function Nav() {
               <a
                 href={`#${id}`}
                 aria-current={active === id ? "true" : undefined}
-                className={`relative block rounded-md px-3 py-1.5 text-sm transition-colors hover:text-ink ${
+                className={`relative block rounded-full px-3.5 py-1.5 text-sm transition-colors hover:text-ink ${
                   active === id ? "text-ink" : "text-ink-subtle"
                 }`}
               >
                 {active === id && (
                   <motion.span
                     layoutId="nav-pill"
-                    className="absolute inset-0 -z-0 rounded-md bg-surface-2"
+                    className="absolute inset-0 -z-0 rounded-full bg-surface-3"
                     transition={{ type: "spring", stiffness: 380, damping: 34 }}
                   />
                 )}
@@ -93,12 +94,12 @@ export function Nav() {
         </ul>
 
         <div className="flex items-center gap-2">
-          <a href="#contact" className="btn btn-primary hidden sm:inline-flex">
+          <a href="#contact" className="btn btn-primary hidden !min-h-9 !py-1.5 sm:inline-flex">
             Hire me
           </a>
           <button
             type="button"
-            className="grid size-10 place-items-center rounded-md border border-hairline md:hidden"
+            className="grid size-10 place-items-center rounded-full border border-white/20 md:hidden"
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? "Close menu" : "Open menu"}

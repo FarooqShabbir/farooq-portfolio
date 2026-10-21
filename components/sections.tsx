@@ -1,14 +1,13 @@
 import {
   award,
-  caseStudies,
   certifications,
   education,
   experience,
   services,
   skillGroups,
 } from "@/content/profile";
-import { DrawLine, DrawRule, MaskedWords, Parallax, Reveal, Spotlight } from "./motion";
-import { InfraVisual, PipelineVisual, ReleaseVisual, VoiceVisual } from "./visuals";
+import { TimelineBeam, TimelineNode, VelocityMarquee, WorkStack } from "./kinetic";
+import { DrawLine, DrawRule, InkFill, MaskedWords, Reveal, Spotlight } from "./motion";
 
 function SectionHeader({ id, eyebrow, title, lead }: { id: string; eyebrow: string; title: string; lead?: string }) {
   return (
@@ -31,13 +30,6 @@ function Section({ id, children, className = "" }: { id: string; children: React
   );
 }
 
-const VISUALS: Record<string, React.ComponentType> = {
-  release: ReleaseVisual,
-  voice: VoiceVisual,
-  infra: InfraVisual,
-  pipeline: PipelineVisual,
-};
-
 export function Work() {
   return (
     <Section id="work">
@@ -47,36 +39,7 @@ export function Work() {
         title="Systems I've designed, shipped and kept running."
         lead="Production work from the last year, from a desktop agent's release pipeline to real-time AI. Client names are kept private; the engineering is shown as it was built."
       />
-      <div className="mt-16 space-y-24 sm:mt-20 sm:space-y-32">
-        {caseStudies.map((cs, idx) => {
-          const Visual = VISUALS[cs.id];
-          const flip = idx % 2 === 1;
-          return (
-            <article key={cs.id} className="grid grid-cols-[minmax(0,1fr)] items-center gap-10 lg:grid-cols-2 lg:gap-16">
-              <Reveal className={`min-w-0 ${flip ? "lg:order-2" : ""}`}>
-                <p className="font-mono text-[12px] text-primary-hover">
-                  0{idx + 1} <span className="text-ink-tertiary">/</span> {cs.kicker}
-                </p>
-                <h3 className="display-md mt-3">{cs.title}</h3>
-                <p className="mt-4 text-[16px] leading-relaxed text-ink-subtle">{cs.body}</p>
-                <ul className="mt-6 space-y-2.5">
-                  {cs.bullets.map((b) => (
-                    <li key={b} className="flex gap-3 text-[15px] text-ink-muted">
-                      <span className="mt-[9px] size-1 shrink-0 rounded-full bg-primary-hover" aria-hidden />
-                      {b}
-                    </li>
-                  ))}
-                </ul>
-              </Reveal>
-              <Reveal delay={0.1} y={28} className={`min-w-0 ${flip ? "lg:order-1" : ""}`}>
-                <Parallax>
-                  <Visual />
-                </Parallax>
-              </Reveal>
-            </article>
-          );
-        })}
-      </div>
+      <WorkStack />
     </Section>
   );
 }
@@ -85,10 +48,12 @@ export function Experience() {
   return (
     <Section id="experience" className="border-t border-hairline">
       <SectionHeader id="experience" eyebrow="Experience" title="Where I've done the work." />
+      <TimelineBeam>
       <ol className="relative mt-14 border-t border-hairline">
         {experience.map((job, idx) => (
           <li key={job.company} className="relative">
             <DrawLine />
+            <TimelineNode />
             <Reveal delay={idx * 0.05} className="grid gap-6 py-10 md:grid-cols-[220px_1fr] md:gap-12">
               <div>
                 <p className="font-mono text-[13px] text-ink-subtle">{job.period}</p>
@@ -100,13 +65,13 @@ export function Experience() {
                 )}
               </div>
               <div>
-                <h3 className="text-[22px] font-medium tracking-[-0.02em]">
+                <h3 className="text-[24px] tracking-[-0.025em]">
                   {job.role} <span className="text-ink-subtle">· {job.company}</span>
                 </h3>
                 <p className="mt-1 text-[13px] text-ink-tertiary">{job.place}</p>
                 <p className="mt-4 max-w-[70ch] text-[16px] leading-relaxed text-ink-muted">{job.summary}</p>
                 <details className="group mt-5">
-                  <summary className="inline-flex cursor-pointer list-none items-center gap-2 rounded-md text-[14px] font-medium text-primary-hover hover:text-ink [&::-webkit-details-marker]:hidden">
+                  <summary data-cursor="Open" className="inline-flex cursor-pointer list-none items-center gap-2 rounded-md text-[14px] text-primary-hover hover:text-ink [&::-webkit-details-marker]:hidden">
                     <span className="group-open:hidden">Show {job.points.length} highlights</span>
                     <span className="hidden group-open:inline">Hide highlights</span>
                     <span aria-hidden className="transition-transform group-open:rotate-90">›</span>
@@ -132,6 +97,7 @@ export function Experience() {
           </li>
         ))}
       </ol>
+      </TimelineBeam>
     </Section>
   );
 }
@@ -150,7 +116,7 @@ export function Services() {
           <Reveal key={s.title} delay={(idx % 3) * 0.06} className="h-full">
             <Spotlight className="panel group flex h-full flex-col p-6 transition-[background-color,transform] duration-300 hover:-translate-y-0.5 hover:bg-surface-2">
               <span className="font-mono text-[12px] text-ink-tertiary">0{idx + 1}</span>
-              <h3 className="mt-6 text-[20px] font-medium tracking-[-0.02em]">{s.title}</h3>
+              <h3 className="mt-8 text-[22px] tracking-[-0.025em]">{s.title}</h3>
               <p className="mt-3 flex-1 text-[15px] leading-relaxed text-ink-subtle">{s.body}</p>
               <ul className="mt-6 flex flex-wrap gap-1.5 border-t border-hairline pt-4" aria-label="Deliverables">
                 {s.deliverables.map((d) => (
@@ -179,33 +145,21 @@ export function Services() {
 
 export function Stack() {
   const marquee = skillGroups.flatMap((g) => g.items);
+  const half = Math.ceil(marquee.length / 2);
   return (
-    <Section id="stack" className="border-t border-hairline">
+    <Section id="stack" className="overflow-x-clip border-t border-hairline">
       <SectionHeader id="stack" eyebrow="Stack" title="Tools I use in production." />
-      <div className="relative mt-12 overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_12%,#000_88%,transparent)]" aria-hidden>
-        <div className="flex w-max animate-marquee gap-2 hover:[animation-play-state:paused]">
-          {[...marquee, ...marquee].map((t, i) => (
-            <span key={i} className="rounded-md border border-hairline bg-surface-1 px-3 py-1.5 font-mono text-[13px] text-ink-muted">
-              {t}
-            </span>
-          ))}
-        </div>
+      {/* Full-bleed rows of tools; scroll faster and they race and lean, scroll up and they reverse. */}
+      <div className="relative left-1/2 mt-14 w-screen -translate-x-1/2 space-y-1 text-[clamp(2.5rem,7vw,6rem)] leading-[1.15] tracking-[-0.045em]">
+        <VelocityMarquee items={marquee.slice(0, half)} base={2.4} className="text-ink" />
+        <VelocityMarquee items={marquee.slice(half)} base={-2} className="text-ink-tertiary" />
       </div>
-      <div className="relative mt-2 overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_12%,#000_88%,transparent)]" aria-hidden>
-        <div className="flex w-max animate-marquee-reverse gap-2 hover:[animation-play-state:paused]">
-          {[...marquee].reverse().concat([...marquee].reverse()).map((t, i) => (
-            <span key={i} className="rounded-md border border-hairline bg-surface-1 px-3 py-1.5 font-mono text-[13px] text-ink-subtle">
-              {t}
-            </span>
-          ))}
-        </div>
-      </div>
-      <dl className="mt-12 grid gap-px overflow-hidden rounded-lg border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-3">
-        {skillGroups.map((g) => (
-          <div key={g.label} className="bg-canvas p-6">
+      <dl className="mt-16 grid gap-px overflow-hidden rounded-lg border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-3">
+        {skillGroups.map((g, i) => (
+          <Reveal key={g.label} delay={(i % 3) * 0.06} className="bg-canvas p-6">
             <dt className="eyebrow">{g.label}</dt>
             <dd className="mt-3 text-[15px] leading-relaxed text-ink-muted">{g.items.join(" · ")}</dd>
-          </div>
+          </Reveal>
         ))}
       </dl>
     </Section>
@@ -218,11 +172,11 @@ export function About() {
       <div className="grid gap-14 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
         <div>
           <SectionHeader id="about" eyebrow="About" title="Engineer first. AI-first by workflow." />
+          <InkFill
+            className="mt-8 text-[clamp(1.25rem,2.1vw,1.625rem)] leading-[1.4] tracking-[-0.015em] text-ink"
+            text="I work across the whole path a product takes to reach users: the Python and FastAPI backend, the Next.js frontend, the cloud it runs on, the pipeline that ships it and the monitoring that tells you when it breaks."
+          />
           <Reveal delay={0.05} className="mt-6 space-y-4 text-[16px] leading-relaxed text-ink-subtle">
-            <p>
-              I work across the whole path a product takes to reach users: the Python and FastAPI backend, the Next.js
-              frontend, the cloud it runs on, the pipeline that ships it and the monitoring that tells you when it breaks.
-            </p>
             <p>
               I build with Claude Code as part of my daily workflow, and pair that speed with strict review, testing
               and verification on every change. I&apos;m currently completing an MS in Computer Science at FAST alongside
@@ -238,7 +192,7 @@ export function About() {
               {education.map((e) => (
                 <li key={e.degree} className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
                   <div>
-                    <p className="text-[16px] font-medium text-ink">{e.degree}</p>
+                    <p className="text-[16px] text-ink">{e.degree}</p>
                     <p className="text-[14px] text-ink-subtle">{e.school}</p>
                   </div>
                   <p className="text-right font-mono text-[12px] text-ink-tertiary">
@@ -265,7 +219,7 @@ export function About() {
           </Reveal>
           <Reveal delay={0.12} className="panel p-6">
             <h3 className="eyebrow">Award</h3>
-            <p className="mt-4 text-[16px] font-medium text-ink">{award.title}</p>
+            <p className="mt-4 text-[16px] text-ink">{award.title}</p>
             <p className="mt-1 text-[14px] leading-relaxed text-ink-subtle">{award.body}</p>
           </Reveal>
         </div>

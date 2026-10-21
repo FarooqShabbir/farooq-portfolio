@@ -8,4 +8,4 @@ Next.js 16 (App Router) + TypeScript + Tailwind CSS 4 + Motion. Single-page site
 
 ## Design references
 
-Brand design systems live at `design-md/awesome-design-md/design-md/<brand>/DESIGN.md` (for example `design-md/awesome-design-md/design-md/airtable`). The current site follows `linear.app`; its tokens are in `app/globals.css`.
+Brand design systems live at `design-md/awesome-design-md/design-md/<brand>/DESIGN.md` (for example `design-md/awesome-design-md/design-md/airtable`). The current site follows `x.ai`; its tokens are in `app/globals.css`.

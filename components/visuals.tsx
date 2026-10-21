@@ -66,8 +66,8 @@ export function ReleaseVisual() {
                 <motion.span
                   className="relative z-10 mt-0.5 grid size-[23px] shrink-0 place-items-center rounded-full border"
                   animate={{
-                    backgroundColor: reached ? "rgb(94 106 210 / 0.18)" : "rgb(15 16 17 / 1)",
-                    borderColor: reached ? "#5e6ad2" : "#34343a",
+                    backgroundColor: reached ? "rgb(255 122 23 / 0.18)" : "rgb(25 25 25 / 1)",
+                    borderColor: reached ? "#ff7a17" : "#3a3c41",
                   }}
                   transition={{ duration: 0.35 }}
                 >
@@ -166,12 +166,12 @@ export function VoiceVisual() {
 function Node({ x, y, w = 120, label, sub }: { x: number; y: number; w?: number; label: string; sub?: string }) {
   return (
     <g>
-      <rect x={x} y={y} width={w} height={sub ? 44 : 32} rx={7} fill="#141516" stroke="#34343a" />
-      <text x={x + w / 2} y={y + (sub ? 19 : 20)} textAnchor="middle" fill="#f7f8f8" fontSize="11.5" fontFamily="var(--font-mono)">
+      <rect x={x} y={y} width={w} height={sub ? 44 : 32} rx={7} fill="#1a1c20" stroke="#3a3c41" />
+      <text x={x + w / 2} y={y + (sub ? 19 : 20)} textAnchor="middle" fill="#ffffff" fontSize="11.5" fontFamily="var(--font-mono)">
         {label}
       </text>
       {sub && (
-        <text x={x + w / 2} y={y + 34} textAnchor="middle" fill="#62666d" fontSize="10" fontFamily="var(--font-mono)">
+        <text x={x + w / 2} y={y + 34} textAnchor="middle" fill="#7d8187" fontSize="10" fontFamily="var(--font-mono)">
           {sub}
         </text>
       )}
@@ -182,11 +182,11 @@ function Node({ x, y, w = 120, label, sub }: { x: number; y: number; w?: number;
 function Flow({ d, delay = 0 }: { d: string; delay?: number }) {
   return (
     <g>
-      <path d={d} fill="none" stroke="#23252a" strokeWidth="1.5" />
+      <path d={d} fill="none" stroke="#212327" strokeWidth="1.5" />
       <path
         d={d}
         fill="none"
-        stroke="#828fff"
+        stroke="#ffc285"
         strokeWidth="1.5"
         strokeDasharray="4 10"
         className="flow-dash"
@@ -204,21 +204,21 @@ export function InfraVisual() {
         <Node x={10} y={6} w={120} label="Route 53" sub="DNS delegation" />
         <Node x={310} y={6} w={120} label="ACM" sub="TLS certificate" />
 
-        <rect x={8} y={70} width={424} height={252} rx={12} fill="none" stroke="#3e3e44" strokeDasharray="3 4" />
-        <text x={20} y={88} fill="#8a8f98" fontSize="10.5" fontFamily="var(--font-mono)">VPC</text>
+        <rect x={8} y={70} width={424} height={252} rx={12} fill="none" stroke="#4a4d52" strokeDasharray="3 4" />
+        <text x={20} y={88} fill="#a1a5ab" fontSize="10.5" fontFamily="var(--font-mono)">VPC</text>
 
-        <rect x={22} y={98} width={396} height={66} rx={9} fill="rgb(94 106 210 / 0.05)" stroke="#23252a" />
-        <text x={34} y={114} fill="#62666d" fontSize="10" fontFamily="var(--font-mono)">public subnets</text>
+        <rect x={22} y={98} width={396} height={66} rx={9} fill="rgb(255 122 23 / 0.05)" stroke="#212327" />
+        <text x={34} y={114} fill="#7d8187" fontSize="10" fontFamily="var(--font-mono)">public subnets</text>
         <Node x={150} y={116} w={140} label="ALB" sub="path routing · health" />
         <Node x={330} y={122} w={78} label="NAT GW" />
         <Node x={32} y={122} w={78} label="IGW" />
 
-        <rect x={22} y={180} width={396} height={130} rx={9} fill="rgb(255 255 255 / 0.015)" stroke="#23252a" />
-        <text x={34} y={196} fill="#62666d" fontSize="10" fontFamily="var(--font-mono)">private subnets · auto scaling group</text>
+        <rect x={22} y={180} width={396} height={130} rx={9} fill="rgb(255 255 255 / 0.015)" stroke="#212327" />
+        <text x={34} y={196} fill="#7d8187" fontSize="10" fontFamily="var(--font-mono)">private subnets · auto scaling group</text>
         <Node x={40} y={212} w={110} label="EC2" sub="custom AMI" />
         <Node x={165} y={212} w={110} label="EC2" sub="custom AMI" />
         <Node x={290} y={212} w={110} label="EC2" sub="scaling…" />
-        <text x={40} y={290} fill="#62666d" fontSize="9.5" fontFamily="var(--font-mono)">IAM role per instance · SSM, no SSH · Secrets Manager</text>
+        <text x={40} y={290} fill="#7d8187" fontSize="9.5" fontFamily="var(--font-mono)">IAM role per instance · SSM, no SSH · Secrets Manager</text>
 
         <Flow d="M220 38 V116" />
         <Flow d="M190 160 C190 190, 95 190, 95 212" delay={0.3} />
@@ -253,8 +253,8 @@ export function PipelineVisual() {
                   <motion.div
                     className="grid size-8 place-items-center rounded-lg border font-mono text-[11px] sm:size-9"
                     animate={{
-                      borderColor: done ? "#27a644" : active ? "#828fff" : "#34343a",
-                      backgroundColor: done ? "rgb(39 166 68 / 0.12)" : active ? "rgb(94 106 210 / 0.16)" : "#0f1011",
+                      borderColor: done ? "#27a644" : active ? "#ffc285" : "#3a3c41",
+                      backgroundColor: done ? "rgb(39 166 68 / 0.12)" : active ? "rgb(255 122 23 / 0.16)" : "#191919",
                       scale: active ? 1.08 : 1,
                     }}
                     transition={{ duration: 0.3 }}

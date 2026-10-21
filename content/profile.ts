@@ -223,3 +223,18 @@ export const stats = [
   { value: "5", label: "Dimensions in the LLM-as-judge rubric" },
   { value: "0", label: "Downtime for production index changes" },
 ];
+
+// The scroll-driven deploy scene: one commit travelling the pipeline shape built for clients.
+export const deployScene = {
+  title: "Every commit takes the same road to production.",
+  lead: "Scroll to ship one. Fast feedback first, signed artifacts, and a deploy that has to prove itself before it counts.",
+  stages: [
+    { name: "commit", detail: "push to main · api/routes/agent.py", log: "trigger   path filter matched api/**" },
+    { name: "build", detail: "docker buildx · multi-stage", log: "image     ghcr.io/app/api:sha-4f1c2e9 pushed" },
+    { name: "test", detail: "pytest · e2e on the packaged build", log: "tests     unit + e2e passed" },
+    { name: "sign", detail: "ed25519 manifest · sha-256", log: "signed    manifest.json  ed25519 ✓" },
+    { name: "stage", detail: "staging for client acceptance", log: "staging   approved by client" },
+    { name: "deploy", detail: "rolling · zero downtime", log: "alb       target group healthy" },
+    { name: "verify", detail: "/healthz 200 · alarms armed", log: "release   live · rollback armed" },
+  ],
+};
