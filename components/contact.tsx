@@ -2,40 +2,33 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { profile } from "@/content/profile";
 import { Reveal } from "./motion";
 
-const TOPICS = [
-  {
-    label: "Freelance project",
-    subject: "Freelance project enquiry",
-    body: "Hi Farooq,\n\nWhat I need:\n\nCurrent setup:\n\nTimeline:\n",
-  },
-  {
-    label: "Full-time role",
-    subject: "Full-time role opportunity",
-    body: "Hi Farooq,\n\nRole and team:\n\nWhat we're building:\n\nLocation / remote:\n",
-  },
-] as const;
+const TOPICS = ["Freelance project", "Full-time role", "Something else"] as const;
 
-const mailto = (subject?: string, body?: string) => {
-  const params = new URLSearchParams();
-  if (subject) params.set("subject", subject);
-  if (body) params.set("body", body);
-  const query = params.toString().replace(/\+/g, "%20");
-  return `mailto:${profile.email}${query ? `?${query}` : ""}`;
-};
+type Status = { kind: "idle" | "sending" | "sent" } | { kind: "error"; message: string };
 
 export function Contact() {
-  const [copied, setCopied] = useState(false);
+  const [topic, setTopic] = useState<(typeof TOPICS)[number]>("Freelance project");
+  const [status, setStatus] = useState<Status>({ kind: "idle" });
 
-  async function copyEmail() {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const data = Object.fromEntries(new FormData(form));
+    setStatus({ kind: "sending" });
     try {
-      await navigator.clipboard.writeText(profile.email);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // Clipboard can be blocked; the address is still visible and selectable.
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...data, topic }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json.error || "Something went wrong. Please try again.");
+      form.reset();
+      setStatus({ kind: "sent" });
+    } catch (err) {
+      setStatus({ kind: "error", message: err instanceof Error ? err.message : "Something went wrong." });
     }
   }
 
@@ -55,11 +48,15 @@ export function Contact() {
                   Let&apos;s build something reliable.
                 </h2>
                 <p className="mt-5 max-w-[42ch] text-[17px] leading-relaxed text-ink-subtle">
-                  Hiring for a DevOps or full-stack role, or need a pipeline, cloud setup or AI feature shipped? Send an
-                  email and I&apos;ll reply personally.
+                  Hiring for a DevOps or full-stack role, or need a pipeline, cloud setup or AI feature shipped? Send a
+                  note and I&apos;ll reply personally.
                 </p>
                 <ul className="mt-8 space-y-3 text-[14px] text-ink-muted">
-                  {["Open to full-time roles and freelance work", "Remote from Lahore, Pakistan (UTC+5)"].map((t) => (
+                  {[
+                    "Open to full-time roles and freelance work",
+                    "Remote from Lahore, Pakistan (UTC+5)",
+                    "Your details are only used to reply to you",
+                  ].map((t) => (
                     <li key={t} className="flex items-center gap-3">
                       <span className="size-1.5 rounded-full bg-primary-hover" aria-hidden />
                       {t}
@@ -69,57 +66,104 @@ export function Contact() {
               </div>
             </Reveal>
 
-            <Reveal delay={0.08} className="flex flex-col justify-center p-8 sm:p-12">
-              <p className="text-[13px] font-medium text-ink-muted">Email</p>
-              <div className="mt-3 flex flex-wrap items-center gap-3">
-                <a
-                  href={mailto()}
-                  className="break-all text-[22px] font-medium tracking-[-0.02em] text-ink underline decoration-hairline-strong underline-offset-[6px] transition-colors hover:decoration-primary-hover sm:text-[28px]"
-                >
-                  {profile.email}
-                </a>
-                <button
-                  type="button"
-                  onClick={copyEmail}
-                  className="btn btn-secondary relative min-w-[96px]"
-                  aria-label={copied ? "Email address copied" : "Copy email address"}
-                >
-                  <AnimatePresence mode="wait" initial={false}>
-                    <motion.span
-                      key={copied ? "copied" : "copy"}
-                      initial={{ opacity: 0, y: 4 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -4 }}
-                      transition={{ duration: 0.15 }}
-                      className={copied ? "text-success" : ""}
-                    >
-                      {copied ? "✓ Copied" : "Copy"}
-                    </motion.span>
-                  </AnimatePresence>
-                </button>
-              </div>
-              <span className="sr-only" aria-live="polite">
-                {copied ? "Email address copied to clipboard" : ""}
-              </span>
-
-              <p className="mt-10 text-[13px] font-medium text-ink-muted">Or start with a ready-made email</p>
-              <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                {TOPICS.map((t) => (
-                  <a
-                    key={t.label}
-                    href={mailto(t.subject, t.body)}
-                    className="group flex items-center justify-between rounded-lg border border-hairline bg-canvas/50 px-4 py-4 transition-colors hover:border-hairline-strong hover:bg-surface-2"
+            <Reveal delay={0.08} className="p-8 sm:p-12">
+              <AnimatePresence mode="wait">
+                {status.kind === "sent" ? (
+                  <motion.div
+                    key="sent"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    className="flex h-full min-h-[360px] flex-col items-start justify-center"
+                    role="status"
                   >
-                    <span>
-                      <span className="block text-[15px] font-medium text-ink">{t.label}</span>
-                      <span className="mt-0.5 block text-[13px] text-ink-subtle">Opens your mail app</span>
-                    </span>
-                    <span aria-hidden className="text-ink-tertiary transition-transform group-hover:translate-x-0.5">
-                      →
-                    </span>
-                  </a>
-                ))}
-              </div>
+                    <span className="grid size-10 place-items-center rounded-full bg-success/15 text-success">✓</span>
+                    <h3 className="mt-5 text-[24px] font-semibold tracking-[-0.02em]">Message sent.</h3>
+                    <p className="mt-2 text-ink-subtle">Thanks for reaching out. I&apos;ll get back to you soon.</p>
+                    <button type="button" className="btn btn-secondary mt-8" onClick={() => setStatus({ kind: "idle" })}>
+                      Send another
+                    </button>
+                  </motion.div>
+                ) : (
+                  <motion.form key="form" onSubmit={onSubmit} className="space-y-5" exit={{ opacity: 0 }}>
+                    <fieldset>
+                      <legend className="mb-2.5 text-[13px] font-medium text-ink-muted">I&apos;m reaching out about</legend>
+                      <div className="flex flex-wrap gap-2">
+                        {TOPICS.map((t) => (
+                          <label
+                            key={t}
+                            className={`cursor-pointer rounded-full border px-3.5 py-2 text-[13px] transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-primary-focus ${
+                              topic === t
+                                ? "border-primary bg-primary/15 text-ink"
+                                : "border-hairline text-ink-subtle hover:border-hairline-strong"
+                            }`}
+                          >
+                            <input
+                              type="radio"
+                              name="topic-choice"
+                              value={t}
+                              checked={topic === t}
+                              onChange={() => setTopic(t)}
+                              className="sr-only"
+                            />
+                            {t}
+                          </label>
+                        ))}
+                      </div>
+                    </fieldset>
+
+                    <div className="grid gap-5 sm:grid-cols-2">
+                      <label className="block">
+                        <span className="mb-2 block text-[13px] font-medium text-ink-muted">Name</span>
+                        <input name="name" required maxLength={120} autoComplete="name" className="field" placeholder="Your name" />
+                      </label>
+                      <label className="block">
+                        <span className="mb-2 block text-[13px] font-medium text-ink-muted">Email</span>
+                        <input
+                          name="email"
+                          type="email"
+                          required
+                          maxLength={200}
+                          autoComplete="email"
+                          className="field"
+                          placeholder="you@company.com"
+                        />
+                      </label>
+                    </div>
+
+                    <label className="block">
+                      <span className="mb-2 block text-[13px] font-medium text-ink-muted">
+                        {topic === "Full-time role" ? "Role and team" : "What do you need?"}
+                      </span>
+                      <textarea
+                        name="message"
+                        required
+                        minLength={10}
+                        maxLength={5000}
+                        rows={5}
+                        className="field resize-y"
+                        placeholder={
+                          topic === "Full-time role"
+                            ? "The role, the team and what you're building."
+                            : "The project, your current setup and your timeline."
+                        }
+                      />
+                    </label>
+
+                    {/* Honeypot for bots; hidden from people and assistive tech. */}
+                    <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
+
+                    <div className="flex flex-wrap items-center gap-4 pt-1">
+                      <button type="submit" className="btn btn-primary min-w-[140px]" disabled={status.kind === "sending"}>
+                        {status.kind === "sending" ? "Sending…" : "Send message"}
+                      </button>
+                      <p className="text-[13px] text-ink-tertiary" role="alert" aria-live="assertive">
+                        {status.kind === "error" ? <span className="text-ink-muted">{status.message}</span> : null}
+                      </p>
+                    </div>
+                  </motion.form>
+                )}
+              </AnimatePresence>
             </Reveal>
           </div>
         </div>

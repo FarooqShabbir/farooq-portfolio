@@ -3,7 +3,7 @@
 Next.js 16 (App Router) + TypeScript + Tailwind CSS 4 + Motion. Single-page site at `app/page.tsx`; sections live in `components/`, and all copy lives in `content/profile.ts`. Deployed on Vercel at https://farooqshabbir.online.
 
 - `npm run dev`, `npm run build`, `npm run typecheck`
-- The only published contact detail is the email in `content/profile.ts`. Never publish the phone number or social handles.
+- Never publish contact details (email, phone, social handles) anywhere in the site. The contact form delivers via `app/api/contact/route.ts` using environment variables.
 - Keep animations behind `MotionConfig reducedMotion="user"` and mark scroll-revealed elements with `data-reveal` so they stay visible without JavaScript.
 
 ## Design references
