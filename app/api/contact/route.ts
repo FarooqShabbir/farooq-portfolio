@@ -59,7 +59,7 @@ export async function POST(req: Request) {
       from: CONTACT_FROM_EMAIL,
       to: [CONTACT_TO_EMAIL],
       reply_to: email,
-      subject: `[Portfolio] ${topic} · ${name}`,
+      subject: `New inquiry: ${topic} from ${name}`,
       text: `${topic}\n\nFrom: ${name} <${email}>\n\n${message}`,
     }),
   });
