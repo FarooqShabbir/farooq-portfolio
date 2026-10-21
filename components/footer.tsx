@@ -21,7 +21,12 @@ export function Footer() {
             </a>
           ))}
         </nav>
-        <p className="text-[12px] text-ink-tertiary">© {new Date().getFullYear()} {profile.name}</p>
+        <div className="flex flex-col gap-1 text-[12px] text-ink-tertiary sm:items-end">
+          <a href={`mailto:${profile.email}`} className="text-ink-subtle transition-colors hover:text-ink">
+            {profile.email}
+          </a>
+          <p>© {new Date().getFullYear()} {profile.name}</p>
+        </div>
       </div>
     </footer>
   );

@@ -4,7 +4,7 @@ Portfolio of Farooq Shabbir, Full Stack DevOps Engineer (AI First). Built for tw
 
 - **Stack:** Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS 4 · Motion · Geist fonts
 - **Design:** follows the Linear reference in `design-md/awesome-design-md/design-md/linear.app/DESIGN.md` (near-black canvas, surface ladder, hairline borders, one lavender accent). The "product screenshots" are code-built, animated panels of real work: a CI/CD run, a signed self-updater, a voice-AI latency waterfall and an AWS VPC diagram.
-- **Content:** all copy lives in `content/profile.ts`. No email, phone or social handles are published anywhere on the site.
+- **Content:** all copy lives in `content/profile.ts`. Email is the only contact detail on the site; the phone number and social handles are not published.
 
 ## Develop
 
@@ -15,17 +15,9 @@ npm run build      # production build
 npm run typecheck
 ```
 
-## Contact form
+## Contact
 
-The form posts to `app/api/contact/route.ts`, which emails the message through [Resend](https://resend.com). The destination address is read from an environment variable, so it never appears in the page source. Set these in **Vercel → Project → Settings → Environment Variables** (see `.env.example`):
-
-| Variable | Value |
-|---|---|
-| `RESEND_API_KEY` | API key from Resend |
-| `CONTACT_TO_EMAIL` | Inbox that should receive messages |
-| `CONTACT_FROM_EMAIL` | Sender on a domain verified in Resend, e.g. `Portfolio <hello@mail.farooqshabbir.online>` |
-
-Until they're set, the form shows a polite "not available right now" message.
+The Contact section shows the email address with a copy button and two ready-made emails (freelance project, full-time role) that open the visitor's mail app. There is no backend or third-party form service to configure.
 
 ## Moving from farooqshabbir.site to farooqshabbir.online
 

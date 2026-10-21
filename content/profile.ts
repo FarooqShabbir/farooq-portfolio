@@ -1,5 +1,5 @@
 // Single source of truth for site copy, taken from the resume.
-// Contact details (email, phone, social handles) are intentionally not stored here.
+// Email is the only published contact method; the phone number and social handles are intentionally left out.
 
 export const SITE_URL = "https://farooqshabbir.online";
 
@@ -8,6 +8,7 @@ export const profile = {
   role: "Full Stack DevOps Engineer",
   roleTag: "AI First",
   location: "Lahore, Pakistan",
+  email: "farooq.shabbir24@gmail.com",
   availability: "Open to full-time roles and freelance projects",
   headline: "I ship the platform, the pipeline and the AI feature.",
   intro:
