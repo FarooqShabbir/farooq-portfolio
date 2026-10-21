@@ -23,7 +23,7 @@ The form posts to `app/api/contact/route.ts`, which emails the message through [
 |---|---|
 | `RESEND_API_KEY` | API key from Resend |
 | `CONTACT_TO_EMAIL` | Inbox that should receive messages |
-| `CONTACT_FROM_EMAIL` | Sender on a domain verified in Resend, e.g. `Portfolio <hello@mail.farooqshabbir.online>` |
+| `CONTACT_FROM_EMAIL` | Sender on a domain verified in Resend, e.g. `Farooq Shabbir · Website <inquiries@mail.farooqshabbir.online>` |
 
 Until they're set, the form shows a polite "not available right now" message.
 
