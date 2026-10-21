@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Reveal } from "./motion";
+import { DrawRule, Magnetic, MaskedWords, Reveal } from "./motion";
 
 const TOPICS = ["Freelance project", "Full-time role", "Something else"] as const;
 
@@ -41,12 +41,10 @@ export function Contact() {
               <div className="dot-grid pointer-events-none absolute inset-0 opacity-60" aria-hidden />
               <div className="relative">
                 <p className="eyebrow flex items-center gap-2">
-                  <span className="h-px w-6 bg-primary" aria-hidden />
+                  <DrawRule className="h-px w-6" />
                   Contact
                 </p>
-                <h2 id="contact-title" className="display-lg mt-4">
-                  Let&apos;s build something reliable.
-                </h2>
+                <MaskedWords id="contact-title" className="display-lg mt-5" text="Let's build something reliable." />
                 <p className="mt-5 max-w-[42ch] text-[17px] leading-relaxed text-ink-subtle">
                   Hiring for a DevOps or full-stack role, or need a pipeline, cloud setup or AI feature shipped? Send a
                   note and I&apos;ll reply personally.
@@ -77,8 +75,15 @@ export function Contact() {
                     className="flex h-full min-h-[360px] flex-col items-start justify-center"
                     role="status"
                   >
-                    <span className="grid size-10 place-items-center rounded-full bg-success/15 text-success">✓</span>
-                    <h3 className="mt-5 text-[24px] font-semibold tracking-[-0.02em]">Message sent.</h3>
+                    <motion.span
+                      className="grid size-12 place-items-center rounded-full bg-success/15 text-success"
+                      initial={{ scale: 0, rotate: -90 }}
+                      animate={{ scale: 1, rotate: 0 }}
+                      transition={{ type: "spring", stiffness: 260, damping: 16 }}
+                    >
+                      ✓
+                    </motion.span>
+                    <h3 className="mt-5 text-[24px] tracking-[-0.02em]">Message sent.</h3>
                     <p className="mt-2 text-ink-subtle">Thanks for reaching out. I&apos;ll get back to you soon.</p>
                     <button type="button" className="btn btn-secondary mt-8" onClick={() => setStatus({ kind: "idle" })}>
                       Send another
@@ -87,7 +92,7 @@ export function Contact() {
                 ) : (
                   <motion.form key="form" onSubmit={onSubmit} className="space-y-5" exit={{ opacity: 0 }}>
                     <fieldset>
-                      <legend className="mb-2.5 text-[13px] font-medium text-ink-muted">I&apos;m reaching out about</legend>
+                      <legend className="mb-2.5 text-[13px] text-ink-muted">I&apos;m reaching out about</legend>
                       <div className="flex flex-wrap gap-2">
                         {TOPICS.map((t) => (
                           <label
@@ -114,11 +119,11 @@ export function Contact() {
 
                     <div className="grid gap-5 sm:grid-cols-2">
                       <label className="block">
-                        <span className="mb-2 block text-[13px] font-medium text-ink-muted">Name</span>
+                        <span className="mb-2 block text-[13px] text-ink-muted">Name</span>
                         <input name="name" required maxLength={120} autoComplete="name" className="field" placeholder="Your name" />
                       </label>
                       <label className="block">
-                        <span className="mb-2 block text-[13px] font-medium text-ink-muted">Email</span>
+                        <span className="mb-2 block text-[13px] text-ink-muted">Email</span>
                         <input
                           name="email"
                           type="email"
@@ -132,7 +137,7 @@ export function Contact() {
                     </div>
 
                     <label className="block">
-                      <span className="mb-2 block text-[13px] font-medium text-ink-muted">
+                      <span className="mb-2 block text-[13px] text-ink-muted">
                         {topic === "Full-time role" ? "Role and team" : "What do you need?"}
                       </span>
                       <textarea
@@ -154,9 +159,16 @@ export function Contact() {
                     <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
 
                     <div className="flex flex-wrap items-center gap-4 pt-1">
-                      <button type="submit" className="btn btn-primary min-w-[140px]" disabled={status.kind === "sending"}>
-                        {status.kind === "sending" ? "Sending…" : "Send message"}
-                      </button>
+                      <Magnetic>
+                        <button
+                          type="submit"
+                          data-cursor="Send"
+                          className="btn btn-primary min-w-[140px]"
+                          disabled={status.kind === "sending"}
+                        >
+                          {status.kind === "sending" ? "Sending…" : "Send message"}
+                        </button>
+                      </Magnetic>
                       <p className="text-[13px] text-ink-tertiary" role="alert" aria-live="assertive">
                         {status.kind === "error" ? <span className="text-ink-muted">{status.message}</span> : null}
                       </p>

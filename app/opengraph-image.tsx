@@ -17,8 +17,8 @@ export default function OpengraphImage() {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: 72,
-          background: "#010102",
-          color: "#f7f8f8",
+          background: "#0a0a0a",
+          color: "#ffffff",
           backgroundImage: "radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px)",
           backgroundSize: "24px 24px",
         }}
@@ -29,7 +29,7 @@ export default function OpengraphImage() {
               width: 48,
               height: 48,
               borderRadius: 10,
-              background: "#5e6ad2",
+              background: "#ff7a17",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -39,11 +39,11 @@ export default function OpengraphImage() {
           >
             FS
           </div>
-          <div style={{ fontSize: 26, color: "#d0d6e0" }}>{profile.name}</div>
+          <div style={{ fontSize: 26, color: "#dadbdf" }}>{profile.name}</div>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ fontSize: 24, color: "#828fff", marginBottom: 18 }}>
+          <div style={{ fontSize: 24, color: "#ffc285", marginBottom: 18 }}>
             {`${profile.role} · ${profile.roleTag}`}
           </div>
           <div style={{ fontSize: 68, fontWeight: 700, letterSpacing: -2.5, lineHeight: 1.05, maxWidth: 940 }}>
@@ -61,10 +61,10 @@ export default function OpengraphImage() {
                 gap: 8,
                 padding: "8px 14px",
                 borderRadius: 8,
-                border: "1px solid #23252a",
-                background: "#0f1011",
+                border: "1px solid #212327",
+                background: "#191919",
                 fontSize: 20,
-                color: "#d0d6e0",
+                color: "#dadbdf",
               }}
             >
               <div style={{ width: 9, height: 9, borderRadius: 9, background: "#27a644" }} />

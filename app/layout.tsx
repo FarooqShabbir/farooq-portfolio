@@ -44,9 +44,12 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#010102",
+  themeColor: "#0a0a0a",
   colorScheme: "dark",
 };
+
+// Marks JS as available, and arms the boot intro once per session unless reduced motion is on.
+const BOOT_SCRIPT = `(function(){var d=document.documentElement;d.classList.add('js');try{if(!sessionStorage.getItem('fs-booted')&&!matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('booting')}catch(e){}})()`;
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -69,7 +72,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
+        <script dangerouslySetInnerHTML={{ __html: BOOT_SCRIPT }} />
       </head>
       <body>
         <a

@@ -66,13 +66,19 @@ app/
   not-found.tsx          404 page
 components/
   nav.tsx                Sticky navigation, mobile menu, active-section tracking
-  hero.tsx               Hero section and stats
-  pipeline-console.tsx   Animated CI/CD run shown in the hero
+  hero.tsx               Hero: live infrastructure canvas, decoding headline, stats
+  constellation.tsx      Canvas of service nodes and traffic packets behind the hero
+  decode.tsx             Terminal-style decoding headline
+  deploy-scene.tsx       Pinned scroll scene: one commit travels the pipeline
+  kinetic.tsx            Stacked case-study cards, velocity marquees, timeline beam
   sections.tsx           Work, Experience, Services, Stack, About
   visuals.tsx            Animated case-study panels
   contact.tsx            Contact form (client side)
-  footer.tsx             Footer
-  motion.tsx             Motion provider and scroll-reveal helper
+  footer.tsx             Curtain footer with the full-width wordmark
+  boot.tsx               First-visit boot intro (once per session)
+  cursor.tsx             Custom cursor on fine pointers
+  smooth-scroll.tsx      Lenis smooth scrolling
+  motion.tsx             Motion provider and shared animation primitives
 content/
   profile.ts             All site copy: profile, experience, work, services, skills
 design-md/               Brand design references (see Design system)
@@ -110,23 +116,24 @@ All text lives in **`content/profile.ts`**; components only render it.
 | Skills | `skillGroups` |
 | Education, certifications, award | `education`, `certifications`, `award` |
 | Hero numbers | `stats` |
+| Pipeline scroll scene | `deployScene` |
 
 After editing, run `npm run build` to confirm nothing broke, then push. Vercel deploys automatically.
 
 ## Design system
 
-The visual language follows the Linear reference at `design-md/awesome-design-md/design-md/linear.app/DESIGN.md`:
+The visual language follows the xAI reference at `design-md/awesome-design-md/design-md/x.ai/DESIGN.md`:
 
-- Near-black canvas (`#010102`) with a four-step surface ladder and 1px hairline borders
-- A single lavender accent (`#5e6ad2`) for the brand mark, primary actions and focus rings
-- Display type at weight 600 with tight negative tracking
-- Code-built "product screenshots" instead of stock imagery
+- One near-black canvas (`#0a0a0a`), hairline borders and no resting shadows
+- White pill buttons: a filled white primary and translucent-white outlines
+- Display type at weight 400 with tight negative tracking; GeistMono uppercase captions
+- The sunset accent (`#ff7a17`) is reserved for live, moving things: progress, traffic, the deploy beam; dusk/twilight tones appear only in the release horizon
 
 Tokens are defined once in the `@theme` block of `app/globals.css` and used as Tailwind classes (`bg-surface-1`, `text-ink-subtle`, `border-hairline`, …). Other brand references are available in `design-md/` for future redesigns.
 
 **Accessibility conventions**
 
-- All animation runs under `MotionConfig reducedMotion="user"`.
+- All animation runs under `MotionConfig reducedMotion="user"`. With reduced motion on there is no boot intro, smooth scrolling, custom cursor or canvas loop (the canvas draws one still frame).
 - Scroll-revealed elements carry `data-reveal`, so they remain visible if JavaScript fails.
 - Skip link, visible focus rings, labelled navigation and keyboard-closable mobile menu.
 

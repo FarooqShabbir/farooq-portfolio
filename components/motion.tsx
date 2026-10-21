@@ -12,14 +12,28 @@ import {
   useSpring,
   useTransform,
   type HTMLMotionProps,
+  type MotionValue,
 } from "motion/react";
+import { BootScreen } from "./boot";
+import { Cursor } from "./cursor";
+import { SmoothScroll } from "./smooth-scroll";
 
-export const EASE = [0.22, 1, 0.36, 1] as const;
+export const EASE = [0.16, 1, 0.3, 1] as const;
+export const EASE_IN_OUT = [0.76, 0, 0.24, 1] as const;
+
+/** Seconds the first-visit boot intro covers the page; hero choreography waits this long. */
+export function bootDelay() {
+  if (typeof document === "undefined") return 0;
+  return document.documentElement.classList.contains("booting") ? 1.9 : 0;
+}
 
 /** Respects the visitor's reduced-motion setting for every animation below it. */
 export function MotionProvider({ children }: { children: React.ReactNode }) {
   return (
     <MotionConfig reducedMotion="user">
+      <SmoothScroll />
+      <BootScreen />
+      <Cursor />
       <ScrollProgress />
       {children}
     </MotionConfig>
@@ -29,14 +43,14 @@ export function MotionProvider({ children }: { children: React.ReactNode }) {
 type RevealProps = HTMLMotionProps<"div"> & { delay?: number; y?: number };
 
 /** Fades and lifts its children in the first time they scroll into view. */
-export function Reveal({ delay = 0, y = 16, children, ...rest }: RevealProps) {
+export function Reveal({ delay = 0, y = 24, children, ...rest }: RevealProps) {
   return (
     <motion.div
       data-reveal
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "0px 0px -12% 0px" }}
-      transition={{ duration: 0.7, ease: EASE, delay }}
+      transition={{ duration: 0.9, ease: EASE, delay }}
       {...rest}
     >
       {children}
@@ -44,47 +58,66 @@ export function Reveal({ delay = 0, y = 16, children, ...rest }: RevealProps) {
   );
 }
 
-/** Thin accent bar across the top that tracks how far down the page you are. */
+/** Thin sunset bar across the top that tracks how far down the page you are. */
 function ScrollProgress() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 140, damping: 28, restDelta: 0.001 });
   return (
     <motion.div
       aria-hidden
-      className="pointer-events-none fixed inset-x-0 top-0 z-[60] h-[2px] origin-left bg-primary-hover"
+      className="pointer-events-none fixed inset-x-0 top-0 z-[60] h-[2px] origin-left bg-primary"
       style={{ scaleX }}
     />
   );
 }
 
-/** Section headings rise word by word out of a mask. Stays readable if scripts fail. */
-export function MaskedWords({ text, className = "", id }: { text: string; className?: string; id?: string }) {
+const wordRise = {
+  hidden: { y: "115%", rotate: 6 },
+  show: (i: number) => ({ y: "0%", rotate: 0, transition: { duration: 1, ease: EASE, delay: i * 0.045 } }),
+};
+
+/**
+ * Section headings rise word by word out of a mask, with a slight rotation that settles.
+ * The in-view trigger sits on the unclipped wrapper; each word inherits it through variants.
+ */
+export function MaskedWords({
+  text,
+  className = "",
+  id,
+  as: Tag = "h2",
+}: {
+  text: string;
+  className?: string;
+  id?: string;
+  as?: "h2" | "h3";
+}) {
   const words = text.split(" ");
   return (
-    <h2 id={id} className={className}>
+    <Tag id={id} className={className}>
       <span className="sr-only">{text}</span>
-      <span aria-hidden>
+      <motion.span
+        aria-hidden
+        className="block"
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "0px 0px -10% 0px" }}
+      >
         {words.map((w, i) => (
-          <span key={i} className="inline-block overflow-hidden pb-[0.12em] align-top">
-            <motion.span
-              data-reveal
-              className="inline-block"
-              initial={{ y: "110%" }}
-              whileInView={{ y: "0%" }}
-              viewport={{ once: true, margin: "0px 0px -10% 0px" }}
-              transition={{ duration: 0.85, ease: EASE, delay: i * 0.05 }}
-            >
-              {w}
-              {i < words.length - 1 ? " " : ""}
-            </motion.span>
+          <span key={i}>
+            <span className="inline-block overflow-hidden pb-[0.14em] -mb-[0.14em] align-top">
+              <motion.span data-reveal className="inline-block origin-bottom-left" variants={wordRise} custom={i}>
+                {w}
+              </motion.span>
+            </span>
+            {i < words.length - 1 ? " " : ""}
           </span>
         ))}
-      </span>
-    </h2>
+      </motion.span>
+    </Tag>
   );
 }
 
-/** The accent rule beside an eyebrow draws itself in. */
+/** The accent rule beside a caption draws itself in. */
 export function DrawRule({ className = "" }: { className?: string }) {
   return (
     <motion.span
@@ -94,7 +127,7 @@ export function DrawRule({ className = "" }: { className?: string }) {
       initial={{ scaleX: 0 }}
       whileInView={{ scaleX: 1 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.8, ease: EASE }}
+      transition={{ duration: 0.9, ease: EASE }}
     />
   );
 }
@@ -109,13 +142,13 @@ export function DrawLine({ delay = 0 }: { delay?: number }) {
       initial={{ scaleX: 0 }}
       whileInView={{ scaleX: 1 }}
       viewport={{ once: true, margin: "0px 0px -8% 0px" }}
-      transition={{ duration: 1.1, ease: EASE, delay }}
+      transition={{ duration: 1.3, ease: EASE, delay }}
     />
   );
 }
 
 /** Counts up to `to` once visible. Renders the final number with no JavaScript. */
-export function CountUp({ to, className }: { to: number; className?: string }) {
+export function CountUp({ to, delay = 0, className }: { to: number; delay?: number; className?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true });
   const reduce = useReducedMotion();
@@ -129,22 +162,22 @@ export function CountUp({ to, className }: { to: number; className?: string }) {
       setN(0);
       return;
     }
-    const controls = animate(0, to, { duration: 1.4, ease: EASE, onUpdate: (v) => setN(Math.round(v)) });
+    const controls = animate(0, to, { duration: 1.6, delay, ease: EASE, onUpdate: (v) => setN(Math.round(v)) });
     return () => controls.stop();
-  }, [armed, inView, to]);
+  }, [armed, inView, to, delay]);
 
   return (
     <span ref={ref} className={className}>
-      {n}
+      {String(n).padStart(2, "0")}
     </span>
   );
 }
 
-/** Pulls its child a few pixels toward the pointer; springs back on leave. */
-export function Magnetic({ children, strength = 0.22 }: { children: React.ReactNode; strength?: number }) {
+/** Pulls its child toward the pointer; springs back on leave. */
+export function Magnetic({ children, strength = 0.3 }: { children: React.ReactNode; strength?: number }) {
   const reduce = useReducedMotion();
-  const x = useSpring(useMotionValue(0), { stiffness: 220, damping: 18, mass: 0.4 });
-  const y = useSpring(useMotionValue(0), { stiffness: 220, damping: 18, mass: 0.4 });
+  const x = useSpring(useMotionValue(0), { stiffness: 200, damping: 15, mass: 0.4 });
+  const y = useSpring(useMotionValue(0), { stiffness: 200, damping: 15, mass: 0.4 });
   return (
     <motion.span
       className="inline-flex"
@@ -182,7 +215,7 @@ export function Spotlight({ children, className = "" }: { children: React.ReactN
 }
 
 /** Drifts its child against the scroll for a sense of depth. */
-export function Parallax({ children, range = 28 }: { children: React.ReactNode; range?: number }) {
+export function Parallax({ children, range = 40 }: { children: React.ReactNode; range?: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [range, -range]);
@@ -193,45 +226,25 @@ export function Parallax({ children, range = 28 }: { children: React.ReactNode; 
   );
 }
 
-/** Hero console starts tilted back and settles flat as it scrolls into the page. */
-export function TiltIn({ children }: { children: React.ReactNode }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 95%", "start 35%"] });
-  const rotateX = useTransform(scrollYProgress, [0, 1], [14, 0]);
-  const scale = useTransform(scrollYProgress, [0, 1], [0.94, 1]);
+function InkWord({ word, i, n, progress }: { word: string; i: number; n: number; progress: MotionValue<number> }) {
+  const opacity = useTransform(progress, [i / n, (i + 1) / n], [0.16, 1]);
   return (
-    <div ref={ref} style={{ perspective: 1400 }}>
-      <motion.div style={{ rotateX, scale, transformOrigin: "50% 100%" }}>{children}</motion.div>
-    </div>
+    <motion.span data-reveal style={{ opacity }}>
+      {word}{" "}
+    </motion.span>
   );
 }
 
-/** Soft accent glow that eases toward the pointer across the hero; idle orbs drift otherwise. */
-export function HeroGlow() {
-  const reduce = useReducedMotion();
-  const x = useSpring(useMotionValue(0.5), { stiffness: 50, damping: 20 });
-  const y = useSpring(useMotionValue(0.3), { stiffness: 50, damping: 20 });
-  const left = useTransform(x, (v) => `${v * 100}%`);
-  const top = useTransform(y, (v) => `${v * 100}%`);
-
-  useEffect(() => {
-    if (reduce) return;
-    const onMove = (e: PointerEvent) => {
-      if (e.pointerType !== "mouse") return;
-      x.set(e.clientX / window.innerWidth);
-      y.set(Math.min(e.clientY / 900, 1));
-    };
-    window.addEventListener("pointermove", onMove, { passive: true });
-    return () => window.removeEventListener("pointermove", onMove);
-  }, [reduce, x, y]);
-
+/** A statement whose words fill to full ink one by one as it rises through the screen. */
+export function InkFill({ text, className = "" }: { text: string; className?: string }) {
+  const ref = useRef<HTMLParagraphElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 85%", "end 50%"] });
+  const words = text.split(" ");
   return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 -z-0 overflow-hidden">
-      <motion.div
-        className="absolute size-[640px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/[0.14] blur-[120px]"
-        style={{ left, top }}
-      />
-      <div className="absolute -right-24 top-24 size-[360px] animate-drift rounded-full bg-primary/[0.08] blur-[100px]" />
-    </div>
+    <p ref={ref} className={className}>
+      {words.map((w, i) => (
+        <InkWord key={i} word={w} i={i} n={words.length} progress={scrollYProgress} />
+      ))}
+    </p>
   );
 }
