@@ -51,23 +51,23 @@ export function DeployScene() {
           }}
         />
 
-        <div className="relative mx-auto grid w-full max-w-[1200px] flex-1 grid-rows-[auto_1fr_auto] gap-6 px-4 pb-10 pt-24 sm:px-6 sm:pt-28">
+        <div className="relative mx-auto grid w-full max-w-[1200px] flex-1 grid-rows-[auto_minmax(0,1fr)_auto] gap-6 px-4 pb-[max(2rem,5vh)] pt-24 sm:px-6 sm:pt-[max(5.5rem,min(7rem,12vh))]">
           <div className="grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:items-end">
             <div>
               <p className="eyebrow flex items-center gap-2">
                 <DrawRule className="h-px w-6" />
                 Pipeline · scroll to deploy
               </p>
-              <MaskedWords id="pipeline-title" className="display-lg mt-5 max-w-[16ch]" text={deployScene.title} />
+              <MaskedWords id="pipeline-title" className="display-lg mt-5 max-w-[16ch] lg:!text-[clamp(2rem,min(4.6vw,7.4vh),4.5rem)]" text={deployScene.title} />
             </div>
             <p className="max-w-[44ch] text-[17px] leading-relaxed text-ink-muted lg:justify-self-end">{deployScene.lead}</p>
           </div>
 
           {/* Live readout */}
-          <div className="grid content-center gap-6 md:grid-cols-[auto_1fr] md:items-center md:gap-12">
+          <div className="grid min-h-0 content-center gap-6 overflow-hidden md:grid-cols-[auto_1fr] md:items-center md:gap-12">
             <div>
               <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-tertiary">elapsed</p>
-              <p className="mt-2 font-mono text-[clamp(3rem,9vw,7.5rem)] leading-none tracking-[-0.06em] tabular-nums text-ink">
+              <p className="mt-2 font-mono text-[clamp(3rem,min(9vw,13vh),7.5rem)] leading-none tracking-[-0.06em] tabular-nums text-ink">
                 {t}
               </p>
               <div className="mt-4 flex h-8 items-center gap-3">
@@ -89,7 +89,7 @@ export function DeployScene() {
               </div>
             </div>
 
-            <div className="panel min-h-[120px] overflow-hidden bg-canvas/70 p-4 font-mono text-[12px] leading-7 backdrop-blur-sm max-md:[&>p:nth-last-child(n+4)]:hidden md:min-h-[196px] md:text-[12.5px]" aria-hidden>
+            <div className="panel min-h-[120px] overflow-hidden bg-canvas/70 p-4 font-mono text-[12px] leading-7 backdrop-blur-sm max-md:[&>p:nth-last-child(n+4)]:hidden md:min-h-[min(196px,24vh)] md:text-[12.5px]" aria-hidden>
               <p className="text-ink-tertiary">$ git push origin main</p>
               <AnimatePresence initial={false}>
                 {STAGES.slice(0, step + 1).map((s, i) => (
@@ -110,30 +110,34 @@ export function DeployScene() {
 
           {/* Track */}
           <div className="relative pt-2">
-            <div className="relative mx-[14px] h-px bg-white/12">
-              <motion.div className="absolute inset-0 origin-left bg-primary" style={{ scaleX: smooth }} />
+            <div className="relative mx-[14px] h-[2px] rounded-full bg-white/20">
+              <span aria-hidden className="track-flow absolute inset-0 rounded-full" />
+              <motion.div
+                className="absolute inset-0 origin-left rounded-full bg-primary shadow-[0_0_12px_rgb(255_122_23_/_0.7)]"
+                style={{ scaleX: smooth }}
+              />
               <motion.div className="absolute top-1/2 -translate-y-1/2" style={{ left: beam }}>
                 <span className="block size-3 -translate-x-1/2 rounded-full bg-primary shadow-[0_0_0_6px_rgb(255_122_23_/_0.18),0_0_32px_8px_rgb(255_122_23_/_0.55)]" />
               </motion.div>
             </div>
-            <ol className="relative mt-[-7px] flex justify-between" aria-label="Pipeline stages">
+            <ol className="relative mt-[-9px] flex justify-between" aria-label="Pipeline stages">
               {STAGES.map((s, i) => {
                 const reached = i <= step;
                 const current = i === step;
                 return (
                   <li key={s.name} className="flex w-7 flex-col items-center">
                     <motion.span
-                      className="grid size-[14px] place-items-center rounded-full border"
+                      className="grid size-4 place-items-center rounded-full border-2"
                       animate={{
                         scale: current ? 1.35 : 1,
-                        borderColor: reached ? "rgba(255,122,23,1)" : "rgba(255,255,255,0.25)",
+                        borderColor: reached ? "rgba(255,122,23,1)" : "rgba(255,255,255,0.45)",
                         backgroundColor: reached ? "rgba(255,122,23,1)" : "rgba(10,10,10,1)",
                       }}
                       transition={{ type: "spring", stiffness: 400, damping: 22 }}
                     />
                     <span
                       className={`mt-4 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.1em] transition-colors duration-300 sm:text-[11px] ${
-                        reached ? "text-ink" : "text-ink-tertiary"
+                        reached ? "text-ink" : "text-ink-subtle"
                       } ${current ? "" : "max-sm:opacity-0"}`}
                     >
                       {s.name}
