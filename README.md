@@ -156,6 +156,7 @@ Set in **Vercel → Project → Settings → Environment Variables** (Production
 | `RESEND_API_KEY` | Resend API key with **Sending access** only |
 | `CONTACT_TO_EMAIL` | Inbox that receives enquiries |
 | `CONTACT_FROM_EMAIL` | `Farooq Shabbir · Website <inquiries@mail.farooqshabbir.online>` |
+| `GOOGLE_SITE_VERIFICATION` | Optional. The `content` value of Google Search Console's HTML-tag verification; adds the meta tag when set |
 
 If any variable is missing, the form shows a "not available right now" message and the reason is logged in Vercel's function logs.
 

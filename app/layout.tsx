@@ -40,7 +40,9 @@ export const metadata: Metadata = {
     lastName: "Shabbir",
   },
   twitter: { card: "summary_large_image", title, description: profile.description },
-  robots: { index: true, follow: true },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large" } },
+  // Set GOOGLE_SITE_VERIFICATION in Vercel to verify Search Console with a meta tag (omitted when unset).
+  verification: process.env.GOOGLE_SITE_VERIFICATION ? { google: process.env.GOOGLE_SITE_VERIFICATION } : undefined,
 };
 
 export const viewport: Viewport = {
@@ -51,21 +53,56 @@ export const viewport: Viewport = {
 // Marks JS as available, and arms the boot intro once per session unless reduced motion is on.
 const BOOT_SCRIPT = `(function(){var d=document.documentElement;d.classList.add('js');try{if(!sessionStorage.getItem('fs-booted')&&!matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('booting')}catch(e){}})()`;
 
+// One linked graph: the site, the profile page, and the person it is about (a single @id ties them together).
+const PERSON_ID = `${SITE_URL}/#person`;
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "ProfilePage",
-  mainEntity: {
-    "@type": "Person",
-    name: profile.name,
-    jobTitle: `${profile.role} (${profile.roleTag})`,
-    url: SITE_URL,
-    address: { "@type": "PostalAddress", addressLocality: "Lahore", addressCountry: "PK" },
-    alumniOf: [
-      { "@type": "CollegeOrUniversity", name: "University of Central Punjab" },
-      { "@type": "CollegeOrUniversity", name: "National University of Computing and Emerging Sciences" },
-    ],
-    knowsAbout: ["DevOps", "AWS", "Azure", "CI/CD", "Docker", "FastAPI", "Next.js", "Large language models"],
-  },
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: profile.name,
+      description: profile.description,
+      inLanguage: "en",
+      publisher: { "@id": PERSON_ID },
+    },
+    {
+      "@type": "ProfilePage",
+      "@id": `${SITE_URL}/#profilepage`,
+      url: SITE_URL,
+      name: title,
+      isPartOf: { "@id": `${SITE_URL}/#website` },
+      about: { "@id": PERSON_ID },
+      mainEntity: { "@id": PERSON_ID },
+      primaryImageOfPage: `${SITE_URL}/opengraph-image`,
+      inLanguage: "en",
+    },
+    {
+      "@type": "Person",
+      "@id": PERSON_ID,
+      name: profile.name,
+      givenName: "Farooq",
+      familyName: "Shabbir",
+      jobTitle: `${profile.role} (${profile.roleTag})`,
+      description: profile.description,
+      url: SITE_URL,
+      image: `${SITE_URL}/opengraph-image`,
+      address: { "@type": "PostalAddress", addressLocality: "Lahore", addressCountry: "PK" },
+      nationality: { "@type": "Country", name: "Pakistan" },
+      alumniOf: [
+        { "@type": "CollegeOrUniversity", name: "University of Central Punjab" },
+        { "@type": "CollegeOrUniversity", name: "National University of Computing and Emerging Sciences" },
+      ],
+      hasOccupation: {
+        "@type": "Occupation",
+        name: profile.role,
+        occupationLocation: { "@type": "City", name: "Lahore" },
+        skills: "DevOps, AWS, Azure, CI/CD, Docker, Python, FastAPI, Next.js, LLM applications",
+      },
+      knowsAbout: ["DevOps", "AWS", "Azure", "CI/CD", "GitHub Actions", "Docker", "Python", "FastAPI", "Next.js", "Large language models"],
+    },
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

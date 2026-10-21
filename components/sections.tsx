@@ -190,12 +190,12 @@ export function About() {
             <h3 className="eyebrow">Education</h3>
             <ul className="mt-4 space-y-5">
               {education.map((e) => (
-                <li key={e.degree} className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-                  <div>
+                <li key={e.degree} className="grid gap-x-8 gap-y-1.5 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-baseline">
+                  <div className="min-w-0">
                     <p className="text-[16px] text-ink">{e.degree}</p>
-                    <p className="text-[14px] text-ink-subtle">{e.school}</p>
+                    <p className="text-[14px] leading-snug text-ink-subtle">{e.school}</p>
                   </div>
-                  <p className="text-right font-mono text-[12px] text-ink-tertiary">
+                  <p className="whitespace-nowrap font-mono text-[12px] leading-5 text-ink-tertiary sm:text-right">
                     {e.period}
                     <span className="block">{e.note}</span>
                   </p>
